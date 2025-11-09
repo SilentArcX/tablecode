@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+
+<head>
+  <meta charset="UTF-8">
+
+  <!-- Favicon and PWA icons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
+
+  <!-- Responsive viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>dashboard</title>
+  <meta name="description" content="dashboard" />
+  <meta name="theme-color" content="#a2dd73" />
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" crossorigin href="/src/styles/index.css">
+
+</head>
+
+<body>
+  <header id="header" class="header">
+    <h1 id="dashboard-title">Dashboard</h1>
+  </header>
+
+  <div id="root">
+    <div class="time-display">&nbsp;</div>
+
+    <div class="stats-container">
+
+      <div class="stat">
+        <div class="stat-label">CPU</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="cpu-bar"></div>
+        </div>
+        <div class="stat-value"><span id="cpu">&nbsp;</span></div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">RAM</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="ram-bar"></div>
+        </div>
+        <div class="stat-value"><span id="ram">&nbsp;</span></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+
+</body>
+
+</html>
