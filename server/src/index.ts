@@ -7,6 +7,10 @@ import { PORT, ALLOWED_ORIGINS } from './config/env';
 import envRoutses from './routes/env';
 import timeRoutes from './routes/time';
 
+// DB
+import { ensureDB } from "./database/ensureDB";
+import { initMenuTable } from './database/initMenu';
+
 // Express 앱 생성
 const app = express();
 
@@ -31,6 +35,11 @@ app.use('/time', timeRoutes);
 // -------------------------------
 async function startServer() {
 	try {
+		// DB 초기화
+		await ensureDB();
+		await initMenuTable();
+		
+		// 서버 시작
 		app.listen(PORT, () => console.log(`→ http://localhost:${PORT}/env : 환경 정보 확인\n`));
 	} catch (err) {
 		console.error("서버 시작 실패:", err);
