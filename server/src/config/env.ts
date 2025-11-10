@@ -1,8 +1,6 @@
-// config/env.ts
+// src/config/env.ts
 import dotenv from 'dotenv';
-
-// .env 파일의 환경 변수들을 process.env로 로드
-dotenv.config();
+dotenv.config({ quiet: true });
 
 // 환경 변수 로드
 export const ENV = process.env.NODE_ENV || (() => {

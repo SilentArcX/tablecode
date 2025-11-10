@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
         {
-            name: 'dashboard',
+            name: 'tablecode-server',
             script: './dist/index.js',
             instances: 1,
             autorestart: true,

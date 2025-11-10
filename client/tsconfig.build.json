@@ -1,13 +1,15 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "sourceMap": false,
-    "removeComments": true,
-    "declaration": false,
-    "skipLibCheck": true,
-    "noEmit": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
-  },
-  "include": ["src"]
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"sourceMap": false,
+		"removeComments": true,
+		"declaration": false,
+		"skipLibCheck": true,
+		"noEmit": false,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false
+	},
+	"include": [
+		"src"
+	]
 }
