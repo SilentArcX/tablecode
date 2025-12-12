@@ -3,17 +3,15 @@ import '../styles/pos.css';
 
 // --- [Interfaces] 데이터 타입 정의 ---
 
-// 1. 목록 조회용 간단한 주문 정보
 interface Order {
     id: number;
     order_number: string;
     total_price: number;
     created_at: string;
     payment_status: string;
-	current_status?: 'ACCEPTED' | 'READY' | 'COMPLETED' | 'CANCELLED';
+    current_status?: 'ACCEPTED' | 'READY' | 'COMPLETED' | 'CANCELLED';
 }
 
-// 2. 상세 조회용 복합 정보 (Order + Items + Options)
 interface OrderDetail {
     orderId: number;
     orderNumber: string;
@@ -35,7 +33,7 @@ const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
 export async function renderPos(root: HTMLElement) {
     document.title = "TableCode - POS (주문 관리)";
 
-    // 1. HTML 구조 설정 (헤더 + 리스트 컨테이너 + 모달)
+    // 1. HTML 구조 설정 (버튼 제거)
     root.innerHTML = `
         <div class="pos-container">
             <header class="pos-header">
@@ -43,7 +41,6 @@ export async function renderPos(root: HTMLElement) {
                     <h2>📑 POS 주문 관리</h2>
                     <span id="current-time"></span>
                 </div>
-                <button id="btn-refresh" class="btn-refresh">🔄 새로고침</button>
             </header>
             
             <div id="order-list-container" class="order-list-container">
@@ -61,7 +58,6 @@ export async function renderPos(root: HTMLElement) {
             </div>
         </div>
     `;
-
 
     // 2. 주문 목록 로드 함수
     const loadOrders = async () => {
@@ -83,25 +79,20 @@ export async function renderPos(root: HTMLElement) {
                 const date = new Date(order.created_at).toLocaleTimeString('ko-KR', { 
                     hour: '2-digit', minute:'2-digit' 
                 });
-                
-                // 상태가 없으면 기본값 'ACCEPTED'
+
                 const status = order.current_status || 'ACCEPTED';
                 const isPaid = order.payment_status === 'PAID';
 
-                // --- [핵심] 상태에 따른 버튼 생성 로직 ---
                 let actionButtonHtml = '';
 
                 if (!isPaid) {
-                    // 결제가 안됐으면 조작 불가
                     actionButtonHtml = `<button class="btn-status-change disabled" disabled>결제 대기</button>`;
                 } else {
                     switch (status) {
                         case 'ACCEPTED':
-                            // 접수 상태 -> '조리 완료' 버튼 (누르면 READY로)
                             actionButtonHtml = `<button class="btn-status-change accept" data-id="${order.id}" data-next="READY">조리 완료</button>`;
                             break;
                         case 'READY':
-                            // 준비됨 상태 -> '픽업 완료' 버튼 (누르면 COMPLETED로)
                             actionButtonHtml = `<button class="btn-status-change complete" data-id="${order.id}" data-next="COMPLETED">픽업 완료</button>`;
                             break;
                         case 'COMPLETED':
@@ -135,9 +126,7 @@ export async function renderPos(root: HTMLElement) {
                 `;
             }).join('');
 
-            // 이벤트 리스너 연결
-            
-            // (1) 상태 변경 버튼들 (조리 완료 / 픽업 완료)
+            // (1) 상태 변경 버튼
             document.querySelectorAll('.btn-status-change').forEach(btn => {
                 if ((btn as HTMLButtonElement).disabled) return;
                 
@@ -145,9 +134,7 @@ export async function renderPos(root: HTMLElement) {
                     const target = e.target as HTMLButtonElement;
                     const orderId = target.dataset.id;
                     const nextStatus = target.dataset.next;
-                    if (orderId && nextStatus) {
-                        handleStatusChange(orderId, nextStatus);
-                    }
+                    if (orderId && nextStatus) handleStatusChange(orderId, nextStatus);
                 });
             });
 
@@ -170,9 +157,9 @@ export async function renderPos(root: HTMLElement) {
     document.getElementById('modal-close')?.addEventListener('click', () => modal?.classList.remove('open'));
     modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
 
-    // 4. 초기 실행
+    // 4. 초기 실행 + 자동 새로고침
     loadOrders();
-    document.getElementById('btn-refresh')?.addEventListener('click', loadOrders);
+    setInterval(loadOrders, 3000);
 }
 
 // --- [Status Change Handler] 상태 변경 요청 ---
@@ -193,10 +180,7 @@ async function handleStatusChange(orderId: string, nextStatus: string) {
 
         if (!res.ok) throw new Error('상태 변경 실패');
         
-        // 성공 시 목록 새로고침
-        const refreshBtn = document.getElementById('btn-refresh');
-        refreshBtn?.click();
-
+        // 목록 갱신은 setInterval이 자동처리
     } catch (error) {
         alert('오류가 발생했습니다.');
         console.error(error);

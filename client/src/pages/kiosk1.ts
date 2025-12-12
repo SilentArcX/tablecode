@@ -277,7 +277,7 @@ async function showProductDetail(root: HTMLElement, productId: string) {
                     const result = await res.json();
                     
                     // 주문 성공 시 알림 및 초기화
-                    alert(`주문이 완료되었습니다! \n(주문번호: ${result.orderNumber})`);
+                    alert(`주문이 완료되었습니다! \n(주문번호: ${result.orderId})`);
                     location.reload(); 
 
                 } catch (error: any) {
