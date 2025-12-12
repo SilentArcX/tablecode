@@ -1,0 +1,88 @@
+/* src/styles/screen.css */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a; /* 어두운 배경 */
+    color: white;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.monitor-container {
+    display: flex;
+    height: 100vh; /* 전체 화면 사용 */
+    width: 100%;
+}
+
+/* 왼쪽: 조리 중 패널 */
+.panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-right: 2px solid #333;
+}
+
+.panel.preparing {
+    background-color: #2c2c2c;
+}
+
+.panel.ready {
+    background-color: #1e3a1e; /* 약간 초록빛 배경 */
+    border-right: none;
+}
+
+/* 헤더 스타일 */
+.panel h2 {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 4px solid rgba(255,255,255,0.1);
+    letter-spacing: 2px;
+}
+
+.panel.ready h2 {
+    color: #4CAF50; /* 준비완료 강조색 */
+    border-bottom-color: #4CAF50;
+}
+
+/* 번호 그리드 */
+.number-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    align-content: start;
+    height: 100%;
+}
+
+/* 주문 번호 카드 */
+.order-num {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    font-size: 4rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* 준비완료 번호 스타일 (강조) */
+.panel.ready .order-num {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 5rem; /* 더 크게 */
+    animation: blink 2s infinite; /* 깜빡임 효과 */
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+.empty-msg {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #666;
+    margin-top: 50px;
+}
