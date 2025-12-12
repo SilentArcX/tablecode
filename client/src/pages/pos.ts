@@ -243,31 +243,3 @@ async function openOrderDetail(orderId: string) {
         content.innerHTML = '<p>정보 로드 실패</p>';
     }
 }
-
-// --- [Helper Function] 조리 완료 처리 ---
-async function handleAcceptOrder(orderId: string) {
-    if (!confirm(`${orderId}번 주문을 조리 완료 처리하시겠습니까?`)) return;
-
-    try {
-        const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000';
-        
-        // 1. 상태 변경 요청 (ACCEPTED -> READY 또는 상황에 맞춰 변경)
-        const res = await fetch(`${API_BASE}/order/${orderId}/status`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ status: 'READY' }) 
-        });
-
-        if (!res.ok) throw new Error('상태 변경 실패');
-
-        alert(`주문(${orderId})이 처리되었습니다.`);
-        
-        // 2. 목록 새로고침
-        const refreshBtn = document.getElementById('btn-refresh');
-        refreshBtn?.click();
-
-    } catch (error) {
-        console.error(error);
-        alert('주문 수락 처리 중 오류가 발생했습니다.');
-    }
-}
